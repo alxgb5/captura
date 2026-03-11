@@ -72,3 +72,16 @@ if codesign --verify --deep build/Captura.app 2>/dev/null; then
 else
     echo -e "${YELLOW}⚠️  Build complete (signature verification may fail on first run)${NC}"
 fi
+
+# Run tests
+echo "Running tests..."
+swiftc \
+  Tests/main.swift \
+  Sources/CapturaCore/CaptureHistoryManager.swift \
+  Sources/CapturaCore/FilenameGenerator.swift \
+  Sources/CapturaCore/ImageExporter.swift \
+  Sources/CapturaCore/PreferencesManager.swift \
+  -sdk $(xcrun --show-sdk-path) \
+  -target arm64-apple-macos13.0 \
+  -framework Cocoa \
+  -o /tmp/captura_tests && /tmp/captura_tests

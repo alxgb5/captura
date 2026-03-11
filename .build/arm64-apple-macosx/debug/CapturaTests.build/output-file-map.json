@@ -1,0 +1,33 @@
+{
+  "": {
+    "swift-dependencies": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/master.swiftdeps"
+  },
+  "/Users/alxgb/Projects/captura/Tests/CapturaTests/CaptureHistoryManagerTests.swift": {
+    "dependencies": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/CaptureHistoryManagerTests.d",
+    "object": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/CaptureHistoryManagerTests.swift.o",
+    "swiftmodule": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/CaptureHistoryManagerTests~partial.swiftmodule",
+    "swift-dependencies": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/CaptureHistoryManagerTests.swiftdeps",
+    "diagnostics": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/CaptureHistoryManagerTests.dia"
+  },
+  "/Users/alxgb/Projects/captura/Tests/CapturaTests/FilenameGeneratorTests.swift": {
+    "dependencies": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/FilenameGeneratorTests.d",
+    "object": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/FilenameGeneratorTests.swift.o",
+    "swiftmodule": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/FilenameGeneratorTests~partial.swiftmodule",
+    "swift-dependencies": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/FilenameGeneratorTests.swiftdeps",
+    "diagnostics": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/FilenameGeneratorTests.dia"
+  },
+  "/Users/alxgb/Projects/captura/Tests/CapturaTests/ImageExporterTests.swift": {
+    "dependencies": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/ImageExporterTests.d",
+    "object": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/ImageExporterTests.swift.o",
+    "swiftmodule": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/ImageExporterTests~partial.swiftmodule",
+    "swift-dependencies": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/ImageExporterTests.swiftdeps",
+    "diagnostics": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/ImageExporterTests.dia"
+  },
+  "/Users/alxgb/Projects/captura/Tests/CapturaTests/PreferencesManagerTests.swift": {
+    "dependencies": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/PreferencesManagerTests.d",
+    "object": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/PreferencesManagerTests.swift.o",
+    "swiftmodule": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/PreferencesManagerTests~partial.swiftmodule",
+    "swift-dependencies": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/PreferencesManagerTests.swiftdeps",
+    "diagnostics": "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/PreferencesManagerTests.dia"
+  }
+}

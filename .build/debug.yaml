@@ -1,0 +1,112 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "CapturaCore-arm64-apple-macosx26.0-debug.module": ["<CapturaCore-arm64-apple-macosx26.0-debug.module>"]
+  "CapturaPackageTests-arm64-apple-macosx26.0-debug.module": ["<CapturaPackageTests-arm64-apple-macosx26.0-debug.module>"]
+  "CapturaPackageTests-arm64-apple-macosx26.0-debug.test": ["<CapturaPackageTests-arm64-apple-macosx26.0-debug.test>"]
+  "CapturaTests-arm64-apple-macosx26.0-debug.module": ["<CapturaTests-arm64-apple-macosx26.0-debug.module>"]
+  "PackageStructure": ["<PackageStructure>"]
+  "main": ["<CapturaCore-arm64-apple-macosx26.0-debug.module>"]
+  "test": ["<CapturaCore-arm64-apple-macosx26.0-debug.module>","<CapturaPackageTests-arm64-apple-macosx26.0-debug.test>","<CapturaTests-arm64-apple-macosx26.0-debug.module>"]
+default: "main"
+nodes:
+  "/Users/alxgb/Projects/captura/Sources/CapturaCore/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/Users/alxgb/Projects/captura/Tests/CapturaTests/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+commands:
+  "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/alxgb/Projects/captura/Sources/CapturaCore/CaptureHistoryManager.swift","/Users/alxgb/Projects/captura/Sources/CapturaCore/FilenameGenerator.swift","/Users/alxgb/Projects/captura/Sources/CapturaCore/ImageExporter.swift","/Users/alxgb/Projects/captura/Sources/CapturaCore/PreferencesManager.swift"]
+    outputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/sources"]
+    description: "Write auxiliary file /Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/sources"
+
+  "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.derived/runner.swift"]
+    outputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.build/sources"]
+    description: "Write auxiliary file /Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.build/sources"
+
+  "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.derived/runner.swift":
+    tool: test-entry-point-tool
+    inputs: []
+    outputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.derived/runner.swift"]
+
+  "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/CaptureHistoryManager.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/FilenameGenerator.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/ImageExporter.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/PreferencesManager.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.build/runner.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/CaptureHistoryManagerTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/FilenameGeneratorTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/ImageExporterTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/PreferencesManagerTests.swift.o"]
+    outputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.product/Objects.LinkFileList"
+
+  "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/alxgb/Projects/captura/Tests/CapturaTests/CaptureHistoryManagerTests.swift","/Users/alxgb/Projects/captura/Tests/CapturaTests/FilenameGeneratorTests.swift","/Users/alxgb/Projects/captura/Tests/CapturaTests/ImageExporterTests.swift","/Users/alxgb/Projects/captura/Tests/CapturaTests/PreferencesManagerTests.swift"]
+    outputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/sources"]
+    description: "Write auxiliary file /Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/sources"
+
+  "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/Library/Developer/CommandLineTools/usr/bin/swiftc"]
+    outputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+
+  "<CapturaCore-arm64-apple-macosx26.0-debug.module>":
+    tool: phony
+    inputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/CaptureHistoryManager.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/FilenameGenerator.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/ImageExporter.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/PreferencesManager.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaCore.swiftmodule"]
+    outputs: ["<CapturaCore-arm64-apple-macosx26.0-debug.module>"]
+
+  "<CapturaPackageTests-arm64-apple-macosx26.0-debug.module>":
+    tool: phony
+    inputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.build/runner.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaPackageTests.swiftmodule"]
+    outputs: ["<CapturaPackageTests-arm64-apple-macosx26.0-debug.module>"]
+
+  "<CapturaPackageTests-arm64-apple-macosx26.0-debug.test>":
+    tool: phony
+    inputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.xctest/Contents/MacOS/CapturaPackageTests"]
+    outputs: ["<CapturaPackageTests-arm64-apple-macosx26.0-debug.test>"]
+
+  "<CapturaTests-arm64-apple-macosx26.0-debug.module>":
+    tool: phony
+    inputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/CaptureHistoryManagerTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/FilenameGeneratorTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/ImageExporterTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/PreferencesManagerTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaTests.swiftmodule"]
+    outputs: ["<CapturaTests-arm64-apple-macosx26.0-debug.module>"]
+
+  "C.CapturaCore-arm64-apple-macosx26.0-debug.module":
+    tool: shell
+    inputs: ["/Users/alxgb/Projects/captura/Sources/CapturaCore/CaptureHistoryManager.swift","/Users/alxgb/Projects/captura/Sources/CapturaCore/FilenameGenerator.swift","/Users/alxgb/Projects/captura/Sources/CapturaCore/ImageExporter.swift","/Users/alxgb/Projects/captura/Sources/CapturaCore/PreferencesManager.swift","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/sources"]
+    outputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/CaptureHistoryManager.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/FilenameGenerator.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/ImageExporter.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/PreferencesManager.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaCore.swiftmodule"]
+    description: "Compiling Swift Module 'CapturaCore' (4 sources)"
+    args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-module-name","CapturaCore","-emit-dependencies","-emit-module","-emit-module-path","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaCore.swiftmodule","-output-file-map","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/output-file-map.json","-parse-as-library","-incremental","-c","@/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/sources","-I","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx13.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/index/store","-Onone","-enable-testing","-j8","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-parse-as-library","-emit-objc-header","-emit-objc-header-path","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/include/CapturaCore-Swift.h","-swift-version","5","-I","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-L","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-plugin-path","/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g","-Xcc","-isysroot","-Xcc","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-Xcc","-fPIC","-Xcc","-g","-package-name","captura"]
+
+  "C.CapturaPackageTests-arm64-apple-macosx26.0-debug.module":
+    tool: shell
+    inputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.derived/runner.swift","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaTests.swiftmodule","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.build/sources"]
+    outputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.build/runner.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaPackageTests.swiftmodule"]
+    description: "Compiling Swift Module 'CapturaPackageTests' (1 sources)"
+    args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-module-name","CapturaPackageTests","-emit-dependencies","-emit-module","-emit-module-path","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaPackageTests.swiftmodule","-output-file-map","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.build/output-file-map.json","-parse-as-library","-incremental","-c","@/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.build/sources","-I","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx13.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/index/store","-Onone","-enable-testing","-Xfrontend","-enable-cross-import-overlays","-j8","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-parse-as-library","-emit-objc-header","-emit-objc-header-path","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.build/include/CapturaPackageTests-Swift.h","-I","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-L","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-plugin-path","/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g","-Xcc","-isysroot","-Xcc","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-Xcc","-fPIC","-Xcc","-g","-package-name","captura"]
+
+  "C.CapturaPackageTests-arm64-apple-macosx26.0-debug.test":
+    tool: shell
+    inputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/CaptureHistoryManager.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/FilenameGenerator.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/ImageExporter.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/PreferencesManager.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.build/runner.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/CaptureHistoryManagerTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/FilenameGeneratorTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/ImageExporterTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/PreferencesManagerTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.product/Objects.LinkFileList"]
+    outputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.xctest/Contents/MacOS/CapturaPackageTests"]
+    description: "Linking ./.build/arm64-apple-macosx/debug/CapturaPackageTests.xctest/Contents/MacOS/CapturaPackageTests"
+    args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-L","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug","-o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.xctest/Contents/MacOS/CapturaPackageTests","-module-name","CapturaPackageTests","-Xlinker","-no_warn_duplicate_libraries","-Xlinker","-bundle","-Xlinker","-rpath","-Xlinker","@loader_path/../../../","@/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaPackageTests.product/Objects.LinkFileList","-target","arm64-apple-macosx13.0","-Xlinker","-add_ast_path","-Xlinker","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaCore.swiftmodule","-Xlinker","-add_ast_path","-Xlinker","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaPackageTests.swiftmodule","-Xlinker","-add_ast_path","-Xlinker","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaTests.swiftmodule","-I","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-L","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-plugin-path","/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g"]
+
+  "C.CapturaTests-arm64-apple-macosx26.0-debug.module":
+    tool: shell
+    inputs: ["/Users/alxgb/Projects/captura/Tests/CapturaTests/CaptureHistoryManagerTests.swift","/Users/alxgb/Projects/captura/Tests/CapturaTests/FilenameGeneratorTests.swift","/Users/alxgb/Projects/captura/Tests/CapturaTests/ImageExporterTests.swift","/Users/alxgb/Projects/captura/Tests/CapturaTests/PreferencesManagerTests.swift","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaCore.swiftmodule","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/sources"]
+    outputs: ["/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/CaptureHistoryManagerTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/FilenameGeneratorTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/ImageExporterTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/PreferencesManagerTests.swift.o","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaTests.swiftmodule"]
+    description: "Compiling Swift Module 'CapturaTests' (4 sources)"
+    args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-module-name","CapturaTests","-emit-dependencies","-emit-module","-emit-module-path","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules/CapturaTests.swiftmodule","-output-file-map","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/output-file-map.json","-parse-as-library","-incremental","-c","@/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaTests.build/sources","-I","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx13.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/index/store","-Onone","-enable-testing","-Xfrontend","-enable-cross-import-overlays","-j8","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-parse-as-library","-swift-version","5","-I","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-L","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-plugin-path","/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g","-Xcc","-isysroot","-Xcc","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-Xcc","-fPIC","-Xcc","-g","-package-name","captura"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/Users/alxgb/Projects/captura/Sources/CapturaCore/","/Users/alxgb/Projects/captura/Tests/CapturaTests/","/Users/alxgb/Projects/captura/Package.swift","/Users/alxgb/Projects/captura/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

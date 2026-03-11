@@ -1,0 +1,3 @@
+module CapturaCore {
+    header "/Users/alxgb/Projects/captura/.build/arm64-apple-macosx/debug/CapturaCore.build/include/CapturaCore-Swift.h"
+}

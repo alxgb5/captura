@@ -1,65 +1,77 @@
-```markdown
-# Captura - macOS Screenshot and Annotation App
+# Captura
 
-## :bulb: Description
-Captura is a macOS application that allows users to take screenshots, annotate them, and record videos. It offers a variety of features to enhance the user experience.
+![macOS](https://img.shields.io/badge/macOS-26+-black?style=flat-square&logo=apple)
+![Swift](https://img.shields.io/badge/Swift-5.9-orange?style=flat-square&logo=swift)
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
+![Release](https://img.shields.io/github/v/release/alxgb5/captura?style=flat-square)
 
-## :mag_right: Features
-- **Capture Région:** Capture a specific area of the screen.
-- **Capture Plein Écran:** Capture the entire screen.
-- **Capture de Fenêtre:** Capture a window.
-- **Scroll Capture:** Capture the entire screen including scroll areas.
-- **Screen Recording (MP4):** Record video snapshots.
-- **Annotation Editor:** Flèches, rectangles, texte, highlight, blur, crayon.
-- **OCR (via Vision):** Reconnaissez le texte.
-- **Historique:** 20 captures précédentes.
-- **Floating Thumbnail:** Affichage de petites images après capture.
-- **Preferences:** Thèmes (light, dark, auto), formats de fichier d'exportation (PNG, JPEG, TIFF), fond d'écran, raccourments personnalisés.
+> Native macOS screenshot app with annotations, OCR, screen recording and Liquid Glass UI.
 
-## :wrench: Install
+![Captura demo](docs/assets/preview.png)
+
+---
+
+## Features
+
+- **Region / Fullscreen / Window capture** — hotkey-driven, no permissions required
+- **Scrolling capture** — auto-scroll + vertical stitch
+- **Screen recording** → MP4 via ScreenCaptureKit
+- **Annotation editor** — arrows, rectangles, text, highlight, blur, pen
+- **OCR** — extract text from any screenshot via Vision framework
+- **Floating thumbnail** — draggable post-capture preview with quick actions
+- **Pin to screen** — float any screenshot over other windows
+- **Capture history** — last 20 captures
+- **Preferences** — theme (light/dark/auto), export format, wallpaper toggle, custom hotkeys
+- **Liquid Glass UI** — native macOS 26 design language
+
+---
+
+## Install
+
+Download the latest [Captura.dmg](https://github.com/alxgb5/captura/releases/latest), open it and drag to Applications.
+
+> No Gatekeeper prompt — app is ad-hoc signed.
+
+---
+
+## Build from source
+
+**Requirements:** macOS 26+, Xcode Command Line Tools (`xcode-select --install`)
+
 ```bash
+git clone https://github.com/alxgb5/captura
+cd captura
 ./build.sh
 open build/Captura.app
 ```
 
-## :construction: Build
-### Prerequisites
-- macOS 10.14 or later
-- Xcode 12.5 or later
+---
 
-### Build Steps
-1. Navigate to the project directory: `cd Captura`
-2. Build the project: `xcodebuild -project Captura.xcodeproj -configuration Release`
+## Usage
 
-## :computer: Usage
-- **Capture Région:** Press `⌘⇧A` to capture a region.
-- **Capture Plein Écran:** Press `⌘⇧F` to capture the entire screen.
-- **Capture de Fenêtre:** Press `⌘⇧T` to capture a window.
-- **Scroll Capture:** Press `⌘⇧S` to capture the entire screen including scroll areas.
-- **Screen Recording:** Press `⌘⇧R` to start recording, press `⌘⇧R` again to stop.
-- **Annotation:** Use the built-in annotation tools for text, rectangles, highlight, blur, and more.
-- **OCR:** Use the built-in OCR tool to recognize text.
-- **Preferences:** Access settings for theme, export formats, and more.
+Captura lives in the menu bar (📸). Click the icon or use hotkeys:
 
-## :clipboard: Shortcuts
-| Action      | Shortcut      |
-|-------------|---------------|
-| Capture Région| `⌘⇧A`        |
-| Capture Plein Écran| `⌘⇧F`      |
-| Capture de Fenêtre| `⌘⇧T`      |
+| Action | Default shortcut |
+|---|---|
+| Capture region | `⌘⇧A` |
+| Capture fullscreen | `⌘⇧F` |
+| Capture window | via menu |
+| Scrolling capture | via menu |
+| Start/stop recording | via menu |
 
-## :book: Preferences
-- **Thème:** Light, Dark, Auto
-- **Format d'exportation:** PNG, JPEG, TIFF
-- **Fond d'écran:** Activer / Désactiver
-- **Raccourments personnalisés:** Custom hotkeys
-
-## :mag_right: Contributing
-Contributions are welcome! Please follow the guidelines for submitting issues and pull requests.
+Shortcuts are rebindable in **Preferences → Shortcuts**.
 
 ---
 
-### :information_source: License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Testing
+
+```bash
+swift test
 ```
 
+---
+
+## License
+
+MIT
