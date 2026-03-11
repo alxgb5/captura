@@ -1,6 +1,5 @@
 import Cocoa
 
-@main
 class AppDelegate: NSObject, NSApplicationDelegate {
     var statusBarController: StatusBarController?
     var hotkeyManager: HotkeyManager?
