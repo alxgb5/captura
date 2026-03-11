@@ -7,9 +7,9 @@ class StatusBarController {
     private var pinnedWindowControllers: [PinnedWindowController] = []
 
     init() {
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "camera.viewfinder", accessibilityDescription: "Captura")
+            button.title = "📸"
         }
         setupMenu()
     }

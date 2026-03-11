@@ -6,6 +6,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var hotkeyManager: HotkeyManager?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        NSApp.setActivationPolicy(.accessory)
         statusBarController = StatusBarController()
         hotkeyManager = HotkeyManager()
         hotkeyManager?.onCaptureRegion = { [weak self] in
