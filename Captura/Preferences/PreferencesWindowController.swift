@@ -3,6 +3,7 @@ import Cocoa
 class PreferencesWindowController: NSObject, NSWindowDelegate {
     static let shared = PreferencesWindowController()
     private var window: NSWindow?
+    private var hotkeyManager: HotkeyManager?
 
     func show() {
         if let window = window, window.isVisible {
@@ -157,10 +158,12 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
         regionLabel.frame = NSRect(x: 20, y: yPos, width: 100, height: 20)
         view.addSubview(regionLabel)
 
-        let regionField = NSTextField(frame: NSRect(x: 130, y: yPos, width: 150, height: 24))
+        let regionField = HotkeyField(frame: NSRect(x: 130, y: yPos, width: 150, height: 24))
         regionField.stringValue = PreferencesManager.regionHotkey
-        regionField.placeholderString = "e.g., Cmd+Shift+A"
-        regionField.isEditable = true
+        regionField.placeholderString = "Press to capture"
+        regionField.onHotkeyChange = { hotkey in
+            PreferencesManager.regionHotkey = hotkey
+        }
         view.addSubview(regionField)
         yPos -= 40
 
@@ -168,10 +171,12 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
         fullscreenLabel.frame = NSRect(x: 20, y: yPos, width: 130, height: 20)
         view.addSubview(fullscreenLabel)
 
-        let fullscreenField = NSTextField(frame: NSRect(x: 160, y: yPos, width: 150, height: 24))
+        let fullscreenField = HotkeyField(frame: NSRect(x: 160, y: yPos, width: 150, height: 24))
         fullscreenField.stringValue = PreferencesManager.fullscreenHotkey
-        fullscreenField.placeholderString = "e.g., Cmd+Shift+F"
-        fullscreenField.isEditable = true
+        fullscreenField.placeholderString = "Press to capture"
+        fullscreenField.onHotkeyChange = { hotkey in
+            PreferencesManager.fullscreenHotkey = hotkey
+        }
         view.addSubview(fullscreenField)
 
         let saveBtn = NSButton(frame: NSRect(x: 500, y: 20, width: 80, height: 32))
@@ -293,7 +298,9 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
     }
 
     @objc private func saveShortcuts(_ sender: NSButton) {
-        // TODO: Save shortcuts
+        if let delegate = NSApplication.shared.delegate as? AppDelegate {
+            delegate.hotkeyManager?.reloadHotkeys()
+        }
     }
 
     private func applyTheme() {
@@ -312,7 +319,7 @@ enum PreferencesManager {
     private static let defaults = UserDefaults.standard
 
     static var launchAtLogin: Bool {
-        get { defaults.bool(forKey: "launchAtLogin") }
+        get { return defaults.object(forKey: "launchAtLogin") as? Bool ?? false }
         set { defaults.set(newValue, forKey: "launchAtLogin") }
     }
 
@@ -386,5 +393,71 @@ enum PreferencesManager {
             return true
         }
         set { defaults.set(newValue, forKey: "copyToClipboard") }
+    }
+}
+
+// MARK: - HotkeyField
+
+private class HotkeyField: NSTextField {
+    var onHotkeyChange: ((String) -> Void)?
+    private var isCapturing = false
+    private var eventMonitor: Any?
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        setupField()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupField()
+    }
+
+    private func setupField() {
+        self.isBezeled = true
+        self.bezelStyle = .squareBezel
+        self.isEditable = false
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        guard !isCapturing else { return }
+        isCapturing = true
+        self.stringValue = "Press a key..."
+        self.backgroundColor = NSColor.systemBlue.withAlphaComponent(0.2)
+
+        let monitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event -> NSEvent? in
+            guard let self = self else { return event }
+
+            let mods = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
+            var modifiers: [String] = []
+
+            if mods.contains(.command) { modifiers.append("Cmd") }
+            if mods.contains(.option) { modifiers.append("Opt") }
+            if mods.contains(.control) { modifiers.append("Ctrl") }
+            if mods.contains(.shift) { modifiers.append("Shift") }
+
+            let key = event.charactersIgnoringModifiers ?? ""
+            let hotkey = modifiers.isEmpty ? key : modifiers.joined(separator: "+") + "+" + key
+
+            self.stringValue = hotkey
+            self.backgroundColor = NSColor.clear
+            self.isCapturing = false
+
+            if let monitor = self.eventMonitor {
+                NSEvent.removeMonitor(monitor)
+                self.eventMonitor = nil
+            }
+
+            self.onHotkeyChange?(hotkey)
+            return nil
+        }
+
+        self.eventMonitor = monitor
+    }
+
+    deinit {
+        if let monitor = eventMonitor {
+            NSEvent.removeMonitor(monitor)
+        }
     }
 }

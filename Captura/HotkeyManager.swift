@@ -15,6 +15,11 @@ class HotkeyManager {
 
     private static var shared: HotkeyManager?
 
+    func reloadHotkeys() {
+        unregister()
+        register()
+    }
+
     func register() {
         HotkeyManager.shared = self
 

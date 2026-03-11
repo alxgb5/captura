@@ -46,7 +46,7 @@ class StatusBarController {
         overlayWindowController?.onCapture = { [weak self] rect in
             self?.overlayWindowController?.close()
             self?.overlayWindowController = nil
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 if let image = CaptureManager.captureRegion(rect) {
                     self?.showResult(image: image)
                 }
@@ -56,7 +56,7 @@ class StatusBarController {
     }
 
     func captureFullscreen() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
             if let image = CaptureManager.captureFullscreen() {
                 self.showResult(image: image)
             }
@@ -148,6 +148,7 @@ class StatusBarController {
     }
 
     func showPreferences() {
+        NSApp.activate(ignoringOtherApps: true)
         PreferencesWindowController.shared.show()
     }
 }
