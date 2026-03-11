@@ -1,130 +1,65 @@
-# Captura 📸
+```markdown
+# Captura - macOS Screenshot and Annotation App
 
-A lightweight, native macOS screenshot and screen capture app — a free, open-source alternative to CleanShot X.
+## :bulb: Description
+Captura is a macOS application that allows users to take screenshots, annotate them, and record videos. It offers a variety of features to enhance the user experience.
 
-![macOS](https://img.shields.io/badge/macOS-13.0%2B-blue?style=flat-square)
-![Swift](https://img.shields.io/badge/Swift-5.9-orange?style=flat-square)
-![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
+## :mag_right: Features
+- **Capture Région:** Capture a specific area of the screen.
+- **Capture Plein Écran:** Capture the entire screen.
+- **Capture de Fenêtre:** Capture a window.
+- **Scroll Capture:** Capture the entire screen including scroll areas.
+- **Screen Recording (MP4):** Record video snapshots.
+- **Annotation Editor:** Flèches, rectangles, texte, highlight, blur, crayon.
+- **OCR (via Vision):** Reconnaissez le texte.
+- **Historique:** 20 captures précédentes.
+- **Floating Thumbnail:** Affichage de petites images après capture.
+- **Preferences:** Thèmes (light, dark, auto), formats de fichier d'exportation (PNG, JPEG, TIFF), fond d'écran, raccourments personnalisés.
 
----
-
-## Features
-
-| Feature | Status |
-|---|---|
-| 📐 Region capture (crosshair) | ✅ |
-| 🖥 Fullscreen capture | ✅ |
-| 📌 Pin screenshot to screen | ✅ |
-| ⌨️ Global hotkeys | ✅ |
-| 📋 Copy to clipboard | ✅ |
-| 💾 Save to file | ✅ |
-| 📜 Scrolling capture | ✅ |
-| ✏️ Annotations (arrows, text, highlight, blur, pen) | ✅ |
-| 🔍 OCR (text recognition) | ✅ |
-| 💾 Capture history | ✅ |
-| ⚙️ Preferences & settings | ✅ |
-| 🎥 Screen recording | 🔜 |
-
----
-
-## Installation
-
-### Requirements
-- macOS 13.0 (Ventura) or later
-- Xcode Command Line Tools (or full Xcode)
-
-### Quick Install (from DMG)
-
-Download the latest `Captura.dmg` from [Releases](https://github.com/alxgb5/captura/releases), mount it, and drag Captura to Applications.
-
-### Build from Source
-
+## :wrench: Install
 ```bash
-git clone https://github.com/alxgb5/captura.git
-cd captura
 ./build.sh
-open build/Captura.app/Contents/MacOS/Captura
+open build/Captura.app
 ```
 
-The `build.sh` script:
-- Compiles all Swift source files with swiftc
-- Links required frameworks (Cocoa, ScreenCaptureKit, AVFoundation, Vision)
-- Generates an Info.plist
-- Ad-hoc signs the binary (so macOS won't block it)
+## :construction: Build
+### Prerequisites
+- macOS 10.14 or later
+- Xcode 12.5 or later
 
-### Create DMG for Distribution
+### Build Steps
+1. Navigate to the project directory: `cd Captura`
+2. Build the project: `xcodebuild -project Captura.xcodeproj -configuration Release`
 
-```bash
-./scripts/make_dmg.sh
-# Output: dist/Captura.dmg
+## :computer: Usage
+- **Capture Région:** Press `⌘⇧A` to capture a region.
+- **Capture Plein Écran:** Press `⌘⇧F` to capture the entire screen.
+- **Capture de Fenêtre:** Press `⌘⇧T` to capture a window.
+- **Scroll Capture:** Press `⌘⇧S` to capture the entire screen including scroll areas.
+- **Screen Recording:** Press `⌘⇧R` to start recording, press `⌘⇧R` again to stop.
+- **Annotation:** Use the built-in annotation tools for text, rectangles, highlight, blur, and more.
+- **OCR:** Use the built-in OCR tool to recognize text.
+- **Preferences:** Access settings for theme, export formats, and more.
+
+## :clipboard: Shortcuts
+| Action      | Shortcut      |
+|-------------|---------------|
+| Capture Région| `⌘⇧A`        |
+| Capture Plein Écran| `⌘⇧F`      |
+| Capture de Fenêtre| `⌘⇧T`      |
+
+## :book: Preferences
+- **Thème:** Light, Dark, Auto
+- **Format d'exportation:** PNG, JPEG, TIFF
+- **Fond d'écran:** Activer / Désactiver
+- **Raccourments personnalisés:** Custom hotkeys
+
+## :mag_right: Contributing
+Contributions are welcome! Please follow the guidelines for submitting issues and pull requests.
+
+---
+
+### :information_source: License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
 
----
-
-## Usage
-
-Once launched, Captura lives in your **menu bar**. No Dock icon — it stays out of your way.
-
-### Hotkeys
-
-| Shortcut | Action |
-|---|---|
-| `⌘ Shift 2` | Capture region |
-| `⌘ Shift 3` | Capture fullscreen |
-
-### Capture workflow
-
-1. Trigger a capture via hotkey or menu bar
-2. Draw your selection (region mode)
-3. The capture window appears with options:
-   - **Copy** → copies to clipboard
-   - **Save** → saves as PNG to Desktop
-   - **Pin** → floats the screenshot above all windows
-
----
-
-## Architecture
-
-```
-Captura/
-├── AppDelegate.swift         # App entry point, NSApplicationDelegate
-├── StatusBarController.swift # Menu bar icon & dropdown menu
-├── CaptureManager.swift      # Screenshot logic (CGWindowList / ScreenCaptureKit)
-├── OverlayWindow.swift       # Crosshair region selector overlay
-├── ResultWindow.swift        # Post-capture window (Copy / Save / Pin)
-├── PinnedWindow.swift        # Floating pinned screenshot window
-├── HotkeyManager.swift       # Global keyboard shortcuts
-└── Info.plist                # App metadata & privacy descriptions
-```
-
----
-
-## Permissions
-
-Captura requires **Screen Recording** permission on first launch.
-Go to **System Settings → Privacy & Security → Screen Recording** and enable Captura.
-
----
-
-## Roadmap
-
-- [x] Annotation tools (arrows, rect, text, highlight, blur, pen)
-- [x] Scrolling capture
-- [x] OCR (Vision framework, French + English)
-- [x] Capture history
-- [x] Preferences & settings
-- [ ] Screen recording (MP4 export)
-- [ ] Custom save location & naming
-- [ ] Keyboard shortcuts customization
-
----
-
-## Contributing
-
-PRs welcome. Open an issue first for major changes.
-
----
-
-## License
-
-MIT — do whatever you want with it.
