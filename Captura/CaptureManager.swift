@@ -6,7 +6,6 @@ enum CaptureManager {
         let screens = NSScreen.screens
         guard !screens.isEmpty else { return nil }
 
-        // Capture all screens combined into one image
         let totalBounds = screens.reduce(CGRect.zero) { $0.union($1.frame) }
         guard let image = CGWindowListCreateImage(
             totalBounds,
@@ -19,8 +18,8 @@ enum CaptureManager {
     }
 
     static func captureRegion(_ rect: CGRect) -> NSImage? {
-        // rect is in screen coordinates (bottom-left origin from CGDisplay)
-        // NSScreen uses flipped coordinates; convert to CG coordinates
+        // rect is in NS screen coordinates (y=0 at bottom of primary screen)
+        // Convert to CG coordinates (y=0 at top of primary screen)
         let screenHeight = NSScreen.screens.first.map { $0.frame.maxY } ?? NSScreen.main!.frame.height
         let cgRect = CGRect(
             x: rect.origin.x,
@@ -37,5 +36,16 @@ enum CaptureManager {
         ) else { return nil }
 
         return NSImage(cgImage: image, size: rect.size)
+    }
+
+    static func captureWindow(_ info: WindowInfo) -> NSImage? {
+        guard let image = CGWindowListCreateImage(
+            .null,
+            .optionIncludingWindow,
+            info.windowID,
+            [.boundsIgnoreFraming, .bestResolution]
+        ) else { return nil }
+
+        return NSImage(cgImage: image, size: info.bounds.size)
     }
 }
