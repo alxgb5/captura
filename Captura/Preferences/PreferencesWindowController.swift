@@ -30,17 +30,23 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
         generalItem.view = generalTab
         tabView.addTabViewItem(generalItem)
 
+        let appearanceTab = makeAppearanceTab()
+        let appearanceItem = NSTabViewItem(identifier: "appearance")
+        appearanceItem.label = "Appearance"
+        appearanceItem.view = appearanceTab
+        tabView.addTabViewItem(appearanceItem)
+
         let shortcutsTab = makeShortcutsTab()
         let shortcutsItem = NSTabViewItem(identifier: "shortcuts")
         shortcutsItem.label = "Shortcuts"
         shortcutsItem.view = shortcutsTab
         tabView.addTabViewItem(shortcutsItem)
 
-        let storageTab = makeStorageTab()
-        let storageItem = NSTabViewItem(identifier: "storage")
-        storageItem.label = "Storage"
-        storageItem.view = storageTab
-        tabView.addTabViewItem(storageItem)
+        let exportTab = makeExportTab()
+        let exportItem = NSTabViewItem(identifier: "export")
+        exportItem.label = "Export"
+        exportItem.view = exportTab
+        tabView.addTabViewItem(exportItem)
 
         win.contentView = tabView
         self.window = win
@@ -74,6 +80,41 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
         thumbnailCheckbox.target = self
         thumbnailCheckbox.action = #selector(toggleFloatingThumbnail(_:))
         view.addSubview(thumbnailCheckbox)
+        yPos -= 40
+
+        let wallpaperLabel = NSTextField(labelWithString: "Include Desktop Wallpaper")
+        wallpaperLabel.frame = NSRect(x: 20, y: yPos, width: 200, height: 20)
+        view.addSubview(wallpaperLabel)
+
+        let wallpaperCheckbox = NSButton(frame: NSRect(x: 220, y: yPos, width: 20, height: 20))
+        wallpaperCheckbox.setButtonType(.switch)
+        wallpaperCheckbox.state = PreferencesManager.includeWallpaper ? .on : .off
+        wallpaperCheckbox.target = self
+        wallpaperCheckbox.action = #selector(toggleIncludeWallpaper(_:))
+        view.addSubview(wallpaperCheckbox)
+
+        return view
+    }
+
+    private func makeAppearanceTab() -> NSView {
+        let view = NSView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
+        let yPos: CGFloat = 360
+
+        let themeLabel = NSTextField(labelWithString: "Theme:")
+        themeLabel.frame = NSRect(x: 20, y: yPos, width: 100, height: 20)
+        view.addSubview(themeLabel)
+
+        let themeSegment = NSSegmentedControl(
+            frame: NSRect(x: 130, y: yPos - 4, width: 200, height: 28)
+        )
+        themeSegment.segmentCount = 3
+        themeSegment.setLabel("Auto", forSegment: 0)
+        themeSegment.setLabel("Light", forSegment: 1)
+        themeSegment.setLabel("Dark", forSegment: 2)
+        themeSegment.selectedSegment = PreferencesManager.appTheme
+        themeSegment.target = self
+        themeSegment.action = #selector(changeTheme(_:))
+        view.addSubview(themeSegment)
 
         return view
     }
@@ -113,28 +154,16 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
         return view
     }
 
-    private func makeStorageTab() -> NSView {
+    private func makeExportTab() -> NSView {
         let view = NSView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
         var yPos: CGFloat = 360
-
-        let folderLabel = NSTextField(labelWithString: "Save Location:")
-        folderLabel.frame = NSRect(x: 20, y: yPos, width: 100, height: 20)
-        view.addSubview(folderLabel)
-
-        let folderBtn = NSButton(frame: NSRect(x: 130, y: yPos - 4, width: 120, height: 28))
-        folderBtn.title = "Choose Folder"
-        folderBtn.bezelStyle = .rounded
-        folderBtn.target = self
-        folderBtn.action = #selector(chooseSaveFolder(_:))
-        view.addSubview(folderBtn)
-        yPos -= 40
 
         let formatLabel = NSTextField(labelWithString: "Format:")
         formatLabel.frame = NSRect(x: 20, y: yPos, width: 100, height: 20)
         view.addSubview(formatLabel)
 
         let formatPopup = NSPopUpButton(frame: NSRect(x: 130, y: yPos - 4, width: 150, height: 28))
-        formatPopup.addItems(withTitles: ["PNG", "JPEG"])
+        formatPopup.addItems(withTitles: ["PNG", "JPEG", "TIFF", "WebP"])
         formatPopup.selectItem(withTitle: PreferencesManager.imageFormat)
         formatPopup.target = self
         formatPopup.action = #selector(changeFormat(_:))
@@ -152,6 +181,30 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
         jpegQualitySlider.target = self
         jpegQualitySlider.action = #selector(changeJPEGQuality(_:))
         view.addSubview(jpegQualitySlider)
+        yPos -= 40
+
+        let folderLabel = NSTextField(labelWithString: "Save Location:")
+        folderLabel.frame = NSRect(x: 20, y: yPos, width: 100, height: 20)
+        view.addSubview(folderLabel)
+
+        let folderBtn = NSButton(frame: NSRect(x: 130, y: yPos - 4, width: 120, height: 28))
+        folderBtn.title = "Choose Folder"
+        folderBtn.bezelStyle = .rounded
+        folderBtn.target = self
+        folderBtn.action = #selector(chooseSaveFolder(_:))
+        view.addSubview(folderBtn)
+        yPos -= 40
+
+        let clipboardLabel = NSTextField(labelWithString: "Copy to Clipboard")
+        clipboardLabel.frame = NSRect(x: 20, y: yPos, width: 200, height: 20)
+        view.addSubview(clipboardLabel)
+
+        let clipboardCheckbox = NSButton(frame: NSRect(x: 220, y: yPos, width: 20, height: 20))
+        clipboardCheckbox.setButtonType(.switch)
+        clipboardCheckbox.state = PreferencesManager.copyToClipboard ? .on : .off
+        clipboardCheckbox.target = self
+        clipboardCheckbox.action = #selector(toggleCopyToClipboard(_:))
+        view.addSubview(clipboardCheckbox)
 
         return view
     }
@@ -162,6 +215,15 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
 
     @objc private func toggleFloatingThumbnail(_ sender: NSButton) {
         PreferencesManager.showFloatingThumbnail = sender.state == .on
+    }
+
+    @objc private func toggleIncludeWallpaper(_ sender: NSButton) {
+        PreferencesManager.includeWallpaper = sender.state == .on
+    }
+
+    @objc private func changeTheme(_ sender: NSSegmentedControl) {
+        PreferencesManager.appTheme = sender.selectedSegment
+        applyTheme()
     }
 
     @objc private func chooseSaveFolder(_ sender: NSButton) {
@@ -186,8 +248,23 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
         PreferencesManager.jpegQuality = sender.doubleValue
     }
 
+    @objc private func toggleCopyToClipboard(_ sender: NSButton) {
+        PreferencesManager.copyToClipboard = sender.state == .on
+    }
+
     @objc private func saveShortcuts(_ sender: NSButton) {
         // TODO: Save shortcuts
+    }
+
+    private func applyTheme() {
+        switch PreferencesManager.appTheme {
+        case 1:
+            NSApp.appearance = NSAppearance(named: .aqua)
+        case 2:
+            NSApp.appearance = NSAppearance(named: .darkAqua)
+        default:
+            NSApp.appearance = nil
+        }
     }
 }
 
@@ -207,6 +284,21 @@ enum PreferencesManager {
             return true
         }
         set { defaults.set(newValue, forKey: "showFloatingThumbnail") }
+    }
+
+    static var includeWallpaper: Bool {
+        get {
+            if let value = defaults.object(forKey: "includeWallpaper") as? Bool {
+                return value
+            }
+            return true
+        }
+        set { defaults.set(newValue, forKey: "includeWallpaper") }
+    }
+
+    static var appTheme: Int {
+        get { defaults.integer(forKey: "appTheme") }
+        set { defaults.set(newValue, forKey: "appTheme") }
     }
 
     static var regionHotkey: String {
@@ -244,5 +336,15 @@ enum PreferencesManager {
     static var jpegQuality: Double {
         get { defaults.double(forKey: "jpegQuality") == 0 ? 0.8 : defaults.double(forKey: "jpegQuality") }
         set { defaults.set(newValue, forKey: "jpegQuality") }
+    }
+
+    static var copyToClipboard: Bool {
+        get {
+            if let value = defaults.object(forKey: "copyToClipboard") as? Bool {
+                return value
+            }
+            return true
+        }
+        set { defaults.set(newValue, forKey: "copyToClipboard") }
     }
 }

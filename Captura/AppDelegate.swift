@@ -6,6 +6,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
+        applyTheme()
         AppIconGenerator.generateAndSaveIcon()
         NotificationManager.requestPermissions()
         statusBarController = StatusBarController()
@@ -17,6 +18,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self?.statusBarController?.captureFullscreen()
         }
         hotkeyManager?.register()
+    }
+
+    private func applyTheme() {
+        let theme = UserDefaults.standard.integer(forKey: "appTheme")
+        switch theme {
+        case 1:
+            NSApp.appearance = NSAppearance(named: .aqua)
+        case 2:
+            NSApp.appearance = NSAppearance(named: .darkAqua)
+        default:
+            NSApp.appearance = nil
+        }
     }
 
     func applicationWillTerminate(_ notification: Notification) {

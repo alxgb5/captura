@@ -7,9 +7,10 @@ enum CaptureManager {
         guard !screens.isEmpty else { return nil }
 
         let totalBounds = screens.reduce(CGRect.zero) { $0.union($1.frame) }
+        let option: CGWindowListOption = PreferencesManager.includeWallpaper ? .optionOnScreenOnly : .optionOnScreenBelowWindow
         guard let image = CGWindowListCreateImage(
             totalBounds,
-            .optionOnScreenOnly,
+            option,
             kCGNullWindowID,
             [.bestResolution, .nominalResolution]
         ) else { return nil }
@@ -28,9 +29,10 @@ enum CaptureManager {
             height: rect.height
         )
 
+        let option: CGWindowListOption = PreferencesManager.includeWallpaper ? .optionOnScreenOnly : .optionOnScreenBelowWindow
         guard let image = CGWindowListCreateImage(
             cgRect,
-            .optionOnScreenOnly,
+            option,
             kCGNullWindowID,
             [.bestResolution, .nominalResolution]
         ) else { return nil }
