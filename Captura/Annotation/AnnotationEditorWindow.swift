@@ -179,6 +179,7 @@ class AnnotationEditorWindowController: NSObject, NSWindowDelegate {
         let buttons: [(String, String, Selector)] = [
             ("doc.on.doc", "Copy", #selector(copyAction)),
             ("square.and.arrow.down", "Save", #selector(saveAction)),
+            ("text.viewfinder", "OCR", #selector(ocrAction)),
             ("pin", "Pin", #selector(pinAction)),
             ("trash", "Discard", #selector(discardAction))
         ]
@@ -243,6 +244,7 @@ class AnnotationEditorWindowController: NSObject, NSWindowDelegate {
                let rep = NSBitmapImageRep(data: tiff),
                let png = rep.representation(using: .png, properties: [:]) {
                 try? png.write(to: url)
+                NotificationManager.showSaveNotification(filename: url.lastPathComponent)
             }
         }
     }
@@ -255,6 +257,27 @@ class AnnotationEditorWindowController: NSObject, NSWindowDelegate {
 
     @objc private func discardAction() {
         window?.close()
+    }
+
+    @objc private func ocrAction() {
+        guard let canvas = canvasView else { return }
+        let image = canvas.renderToImage()
+        OCRManager.recognizeText(in: image) { [weak self] texts in
+            let fullText = texts.joined(separator: "\n")
+            let alert = NSAlert()
+            alert.messageText = "Recognized Text"
+            alert.informativeText = fullText.isEmpty ? "No text found" : fullText
+            alert.addButton(withTitle: "Copy")
+            alert.addButton(withTitle: "Close")
+            if let window = self?.window {
+                alert.beginSheetModal(for: window) { response in
+                    if response == .alertFirstButtonReturn {
+                        NSPasteboard.general.clearContents()
+                        NSPasteboard.general.setString(fullText, forType: .string)
+                    }
+                }
+            }
+        }
     }
 }
 

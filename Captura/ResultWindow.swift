@@ -51,6 +51,11 @@ class ResultWindowController: NSObject, NSWindowDelegate {
         window?.close()
     }
 
+    func bringToFront() {
+        window?.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
     func windowWillClose(_ notification: Notification) {
         onClose?()
     }
@@ -71,6 +76,7 @@ class ResultWindowController: NSObject, NSWindowDelegate {
                let rep = NSBitmapImageRep(data: tiff),
                let png = rep.representation(using: .png, properties: [:]) {
                 try? png.write(to: url)
+                NotificationManager.showSaveNotification(filename: url.lastPathComponent)
             }
         }
     }

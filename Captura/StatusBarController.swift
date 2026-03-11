@@ -5,11 +5,12 @@ class StatusBarController {
     private var overlayWindowController: OverlayWindowController?
     private var resultWindowControllers: [ResultWindowController] = []
     private var pinnedWindowControllers: [PinnedWindowController] = []
+    private var scrollingCaptureManager: ScrollingCaptureManager?
 
     init() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem.button {
-            button.title = "📸"
+            button.image = NSImage.renderSymbol("camera.fill", size: 18)
         }
         setupMenu()
     }
@@ -20,6 +21,11 @@ class StatusBarController {
             .target = self
         menu.addItem(withTitle: "Capture Fullscreen", action: #selector(captureFullscreenAction), keyEquivalent: "")
             .target = self
+        menu.addItem(withTitle: "Scrolling Capture", action: #selector(scrollingCaptureAction), keyEquivalent: "")
+            .target = self
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(withTitle: "Preferences", action: #selector(preferencesAction), keyEquivalent: ",")
+            .target = self
         menu.addItem(NSMenuItem.separator())
         menu.addItem(withTitle: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         statusItem.menu = menu
@@ -27,6 +33,8 @@ class StatusBarController {
 
     @objc private func captureRegionAction() { captureRegion() }
     @objc private func captureFullscreenAction() { captureFullscreen() }
+    @objc private func scrollingCaptureAction() { scrollingCapture() }
+    @objc private func preferencesAction() { showPreferences() }
 
     func captureRegion() {
         overlayWindowController?.close()
@@ -67,5 +75,33 @@ class StatusBarController {
             self?.resultWindowControllers.removeAll { $0 === ctrl }
         }
         controller.show()
+
+        // Show floating thumbnail if enabled
+        if PreferencesManager.showFloatingThumbnail {
+            let thumbnail = FloatingThumbnailController(image: image)
+            thumbnail.onThumbnailClick = { [weak controller] in
+                controller?.bringToFront()
+            }
+            thumbnail.show()
+        }
+    }
+
+    func scrollingCapture() {
+        scrollingCaptureManager = ScrollingCaptureManager()
+        scrollingCaptureManager?.onComplete = { [weak self] image in
+            self?.showAnnotationEditor(image: image)
+        }
+        scrollingCaptureManager?.start()
+    }
+
+    private func showAnnotationEditor(image: NSImage) {
+        let controller = AnnotationEditorWindowController(image: image)
+        controller.onClose = { }
+        controller.onPin = { _ in }
+        controller.show()
+    }
+
+    func showPreferences() {
+        PreferencesWindowController.shared.show()
     }
 }
