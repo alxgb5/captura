@@ -94,7 +94,14 @@ class AnnotationEditorWindowController: NSObject, NSWindowDelegate {
     private func makeTopToolbar(width: CGFloat) -> NSView {
         let bar = NSView(frame: .zero)
         bar.wantsLayer = true
-        bar.layer?.backgroundColor = NSColor.controlBackgroundColor.cgColor
+
+        // Liquid Glass background
+        let effectView = NSVisualEffectView(frame: NSRect(origin: .zero, size: CGSize(width: width, height: topToolbarH)))
+        effectView.blendingMode = .behindWindow
+        effectView.material = .hudWindow
+        effectView.state = .active
+        effectView.autoresizingMask = [.width, .height]
+        bar.addSubview(effectView, positioned: .below, relativeTo: nil)
 
         let tools: [(String, String, AnnotationTool)] = [
             ("arrow.up.right", "Arrow", .arrow),
@@ -109,7 +116,7 @@ class AnnotationEditorWindowController: NSObject, NSWindowDelegate {
         let btnSize: CGFloat = 32
         let btnSpacing: CGFloat = 4
 
-        // Tool buttons
+        // Tool buttons with glass hover effect
         for (icon, tip, tool) in tools {
             let btn = ToolButton(frame: NSRect(x: x, y: (topToolbarH - btnSize) / 2, width: btnSize, height: btnSize))
             if let img = NSImage(systemSymbolName: icon, accessibilityDescription: tip) {
@@ -117,7 +124,10 @@ class AnnotationEditorWindowController: NSObject, NSWindowDelegate {
             }
             btn.toolTip = tip
             btn.bezelStyle = .regularSquare
-            btn.isBordered = true
+            btn.isBordered = false
+            btn.wantsLayer = true
+            btn.layer?.cornerRadius = 6
+            btn.layer?.backgroundColor = NSColor.white.withAlphaComponent(0.1).cgColor
             btn.annotationTool = tool
             btn.target = self
             btn.action = #selector(toolSelected(_:))
@@ -180,7 +190,14 @@ class AnnotationEditorWindowController: NSObject, NSWindowDelegate {
     private func makeBottomToolbar(width: CGFloat) -> NSView {
         let bar = NSView(frame: .zero)
         bar.wantsLayer = true
-        bar.layer?.backgroundColor = NSColor.windowBackgroundColor.cgColor
+
+        // Liquid Glass background
+        let effectView = NSVisualEffectView(frame: NSRect(origin: .zero, size: CGSize(width: width, height: bottomToolbarH)))
+        effectView.blendingMode = .withinWindow
+        effectView.material = .hudWindow
+        effectView.state = .active
+        effectView.autoresizingMask = [.width, .height]
+        bar.addSubview(effectView, positioned: .below, relativeTo: nil)
 
         let buttons: [(String, String, Selector)] = [
             ("doc.on.doc", "Copy", #selector(copyAction)),

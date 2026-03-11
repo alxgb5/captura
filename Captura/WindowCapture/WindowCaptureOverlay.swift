@@ -182,11 +182,20 @@ class WindowCaptureView: NSView {
         NSColor.clear.setFill()
         NSBezierPath(rect: viewRect).fill()
 
-        // Blue highlight border
-        NSColor.systemBlue.withAlphaComponent(0.9).setStroke()
-        let path = NSBezierPath(rect: viewRect.insetBy(dx: 1, dy: 1))
-        path.lineWidth = 2
-        path.stroke()
+        // Liquid Glass highlight border with glow effect
+        let borderRect = viewRect.insetBy(dx: 1, dy: 1)
+
+        // Outer glow (soft accent)
+        NSColor.systemBlue.withAlphaComponent(0.3).setStroke()
+        let glowPath = NSBezierPath(rect: borderRect.insetBy(dx: -3, dy: -3))
+        glowPath.lineWidth = 4
+        glowPath.stroke()
+
+        // Main border (bright accent)
+        NSColor.systemBlue.withAlphaComponent(0.95).setStroke()
+        let borderPath = NSBezierPath(rect: borderRect)
+        borderPath.lineWidth = 2
+        borderPath.stroke()
 
         // Label with window title
         let label = info.title

@@ -56,6 +56,16 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
 
     private func makeGeneralTab() -> NSView {
         let view = NSView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
+        view.wantsLayer = true
+
+        // Subtle background
+        let effectView = NSVisualEffectView(frame: view.bounds)
+        effectView.blendingMode = .withinWindow
+        effectView.material = .contentBackground
+        effectView.state = .active
+        effectView.autoresizingMask = [.width, .height]
+        view.addSubview(effectView, positioned: .below, relativeTo: nil)
+
         var yPos: CGFloat = 360
 
         let launchLabel = NSTextField(labelWithString: "Launch at Login")
@@ -98,6 +108,16 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
 
     private func makeAppearanceTab() -> NSView {
         let view = NSView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
+        view.wantsLayer = true
+
+        // Subtle background
+        let effectView = NSVisualEffectView(frame: view.bounds)
+        effectView.blendingMode = .withinWindow
+        effectView.material = .contentBackground
+        effectView.state = .active
+        effectView.autoresizingMask = [.width, .height]
+        view.addSubview(effectView, positioned: .below, relativeTo: nil)
+
         let yPos: CGFloat = 360
 
         let themeLabel = NSTextField(labelWithString: "Theme:")
@@ -121,6 +141,16 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
 
     private func makeShortcutsTab() -> NSView {
         let view = NSView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
+        view.wantsLayer = true
+
+        // Subtle background
+        let effectView = NSVisualEffectView(frame: view.bounds)
+        effectView.blendingMode = .withinWindow
+        effectView.material = .contentBackground
+        effectView.state = .active
+        effectView.autoresizingMask = [.width, .height]
+        view.addSubview(effectView, positioned: .below, relativeTo: nil)
+
         var yPos: CGFloat = 360
 
         let regionLabel = NSTextField(labelWithString: "Capture Region:")
@@ -156,6 +186,16 @@ class PreferencesWindowController: NSObject, NSWindowDelegate {
 
     private func makeExportTab() -> NSView {
         let view = NSView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
+        view.wantsLayer = true
+
+        // Subtle background
+        let effectView = NSVisualEffectView(frame: view.bounds)
+        effectView.blendingMode = .withinWindow
+        effectView.material = .contentBackground
+        effectView.state = .active
+        effectView.autoresizingMask = [.width, .height]
+        view.addSubview(effectView, positioned: .below, relativeTo: nil)
+
         var yPos: CGFloat = 360
 
         let formatLabel = NSTextField(labelWithString: "Format:")
