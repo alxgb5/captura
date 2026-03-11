@@ -10,7 +10,6 @@ NC='\033[0m' # No Color
 echo -e "${YELLOW}Building Captura...${NC}"
 
 SDK=$(xcrun --show-sdk-path)
-SOURCES=$(find Captura -name "*.swift" | sort | tr "\n" " ")
 
 # Create build directory structure
 mkdir -p build/Captura.app/Contents/MacOS
@@ -18,7 +17,9 @@ mkdir -p build/Captura.app/Contents/Resources
 
 # Compile
 echo "Compiling..."
-swiftc $SOURCES \
+# Use readarray to handle paths with spaces safely
+readarray -d '' SOURCES < <(find Captura -name "*.swift" | sort | tr '\n' '\0')
+swiftc "${SOURCES[@]}" \
   -sdk $SDK -target arm64-apple-macos13.0 \
   -framework Cocoa -framework ScreenCaptureKit -framework AVFoundation -framework Vision \
   -o build/Captura.app/Contents/MacOS/Captura
