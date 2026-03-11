@@ -7,7 +7,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Captura</string>
 	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
+	<string>Captura</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.captura.app</string>
 	<key>CFBundleInfoDictionaryVersion</key>
