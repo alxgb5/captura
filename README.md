@@ -18,9 +18,12 @@ A lightweight, native macOS screenshot and screen capture app — a free, open-s
 | ⌨️ Global hotkeys | ✅ |
 | 📋 Copy to clipboard | ✅ |
 | 💾 Save to file | ✅ |
+| 📜 Scrolling capture | ✅ |
+| ✏️ Annotations (arrows, text, highlight, blur, pen) | ✅ |
+| 🔍 OCR (text recognition) | ✅ |
+| 💾 Capture history | ✅ |
+| ⚙️ Preferences & settings | ✅ |
 | 🎥 Screen recording | 🔜 |
-| ✏️ Annotations | 🔜 |
-| 🔍 OCR (text recognition) | 🔜 |
 
 ---
 
@@ -28,18 +31,33 @@ A lightweight, native macOS screenshot and screen capture app — a free, open-s
 
 ### Requirements
 - macOS 13.0 (Ventura) or later
-- Xcode 15+ (to build from source)
+- Xcode Command Line Tools (or full Xcode)
 
-### Build from source
+### Quick Install (from DMG)
+
+Download the latest `Captura.dmg` from [Releases](https://github.com/alxgb5/captura/releases), mount it, and drag Captura to Applications.
+
+### Build from Source
 
 ```bash
 git clone https://github.com/alxgb5/captura.git
 cd captura
-xcodebuild -project Captura.xcodeproj -scheme Captura build
-open build/Release/Captura.app
+./build.sh
+open build/Captura.app/Contents/MacOS/Captura
 ```
 
-> **Note:** If you only have Command Line Tools (no full Xcode), use the included `project.yml` with [XcodeGen](https://github.com/yonas/XcodeGen) to regenerate the project, or compile directly with `swiftc`.
+The `build.sh` script:
+- Compiles all Swift source files with swiftc
+- Links required frameworks (Cocoa, ScreenCaptureKit, AVFoundation, Vision)
+- Generates an Info.plist
+- Ad-hoc signs the binary (so macOS won't block it)
+
+### Create DMG for Distribution
+
+```bash
+./scripts/make_dmg.sh
+# Output: dist/Captura.dmg
+```
 
 ---
 
@@ -90,12 +108,14 @@ Go to **System Settings → Privacy & Security → Screen Recording** and enable
 
 ## Roadmap
 
+- [x] Annotation tools (arrows, rect, text, highlight, blur, pen)
+- [x] Scrolling capture
+- [x] OCR (Vision framework, French + English)
+- [x] Capture history
+- [x] Preferences & settings
 - [ ] Screen recording (MP4 export)
-- [ ] Annotation tools (arrows, text, blur, highlight)
-- [ ] Scrolling capture
-- [ ] OCR (Vision framework)
-- [ ] Capture history
 - [ ] Custom save location & naming
+- [ ] Keyboard shortcuts customization
 
 ---
 

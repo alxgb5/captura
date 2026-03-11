@@ -10,7 +10,11 @@ class StatusBarController {
     init() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem.button {
-            button.image = NSImage.renderSymbol("camera.fill", size: 18)
+            let config = NSImage.SymbolConfiguration(pointSize: 14, weight: .medium)
+            if let img = NSImage(systemSymbolName: "camera.fill", accessibilityDescription: "Captura")?.withSymbolConfiguration(config) {
+                img.isTemplate = true
+                button.image = img
+            }
         }
         setupMenu()
     }
@@ -79,8 +83,32 @@ class StatusBarController {
         // Show floating thumbnail if enabled
         if PreferencesManager.showFloatingThumbnail {
             let thumbnail = FloatingThumbnailController(image: image)
-            thumbnail.onThumbnailClick = { [weak controller] in
-                controller?.bringToFront()
+            thumbnail.onEdit = { [weak self] in
+                let annotationController = AnnotationEditorWindowController(image: image)
+                annotationController.onPin = { pinnedImage in
+                    let resultCtrl = self?.createResultWindowControllerForAnnotation(image: pinnedImage)
+                    resultCtrl?.show()
+                }
+                annotationController.onClose = { }
+                annotationController.show()
+            }
+            thumbnail.onCopy = {
+                NSPasteboard.general.clearContents()
+                NSPasteboard.general.writeObjects([image])
+            }
+            thumbnail.onSave = {
+                let panel = NSSavePanel()
+                panel.allowedContentTypes = [.png]
+                panel.nameFieldStringValue = "screenshot-\(Int(Date().timeIntervalSince1970)).png"
+                panel.begin { response in
+                    guard response == .OK, let url = panel.url else { return }
+                    if let tiff = image.tiffRepresentation,
+                       let rep = NSBitmapImageRep(data: tiff),
+                       let png = rep.representation(using: .png, properties: [:]) {
+                        try? png.write(to: url)
+                        NotificationManager.showSaveNotification(filename: url.lastPathComponent)
+                    }
+                }
             }
             thumbnail.show()
         }
@@ -99,6 +127,24 @@ class StatusBarController {
         controller.onClose = { }
         controller.onPin = { _ in }
         controller.show()
+    }
+
+    private func createResultWindowControllerForAnnotation(image: NSImage) -> ResultWindowController {
+        let controller = ResultWindowController(image: image)
+        resultWindowControllers.append(controller)
+        controller.onPin = { [weak self, weak controller] in
+            guard let self = self, let ctrl = controller else { return }
+            let pinned = PinnedWindowController(image: image)
+            self.pinnedWindowControllers.append(pinned)
+            pinned.show()
+            ctrl.close()
+            self.resultWindowControllers.removeAll { $0 === ctrl }
+        }
+        controller.onClose = { [weak self, weak controller] in
+            guard let ctrl = controller else { return }
+            self?.resultWindowControllers.removeAll { $0 === ctrl }
+        }
+        return controller
     }
 
     func showPreferences() {

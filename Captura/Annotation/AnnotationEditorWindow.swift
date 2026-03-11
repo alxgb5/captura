@@ -94,7 +94,7 @@ class AnnotationEditorWindowController: NSObject, NSWindowDelegate {
     private func makeTopToolbar(width: CGFloat) -> NSView {
         let bar = NSView(frame: .zero)
         bar.wantsLayer = true
-        bar.layer?.backgroundColor = NSColor.windowBackgroundColor.cgColor
+        bar.layer?.backgroundColor = NSColor.controlBackgroundColor.cgColor
 
         let tools: [(String, String, AnnotationTool)] = [
             ("arrow.up.right", "Arrow", .arrow),
@@ -105,39 +105,43 @@ class AnnotationEditorWindowController: NSObject, NSWindowDelegate {
             ("scribble", "Pen", .pen)
         ]
 
-        var x: CGFloat = 10
+        var x: CGFloat = 12
         let btnSize: CGFloat = 32
+        let btnSpacing: CGFloat = 4
 
+        // Tool buttons
         for (icon, tip, tool) in tools {
             let btn = ToolButton(frame: NSRect(x: x, y: (topToolbarH - btnSize) / 2, width: btnSize, height: btnSize))
-            btn.image = NSImage(systemSymbolName: icon, accessibilityDescription: tip)
+            if let img = NSImage(systemSymbolName: icon, accessibilityDescription: tip) {
+                btn.image = img
+            }
             btn.toolTip = tip
             btn.bezelStyle = .regularSquare
-            btn.isBordered = false
+            btn.isBordered = true
             btn.annotationTool = tool
             btn.target = self
             btn.action = #selector(toolSelected(_:))
             bar.addSubview(btn)
-            x += btnSize + 4
+            x += btnSize + btnSpacing
         }
 
         // Separator
-        x += 8
-        let sep1 = NSBox(frame: NSRect(x: x, y: 8, width: 1, height: topToolbarH - 16))
+        x += 4
+        let sep1 = NSBox(frame: NSRect(x: x, y: 10, width: 1, height: topToolbarH - 20))
         sep1.boxType = .separator
         bar.addSubview(sep1)
-        x += 12
+        x += 10
 
         // Color well
-        let well = NSColorWell(frame: NSRect(x: x, y: (topToolbarH - 28) / 2, width: 36, height: 28))
+        let well = NSColorWell(frame: NSRect(x: x, y: (topToolbarH - 26) / 2, width: 34, height: 26))
         well.color = .systemRed
         well.target = self
         well.action = #selector(colorChanged(_:))
         bar.addSubview(well)
         self.colorWell = well
-        x += 44
+        x += 42
 
-        // Stroke width
+        // Stroke width segmented control
         let seg = NSSegmentedControl(
             labels: ["Thin", "Med", "Thick"],
             trackingMode: .selectOne,
@@ -151,15 +155,17 @@ class AnnotationEditorWindowController: NSObject, NSWindowDelegate {
         x += 128
 
         // Separator
-        let sep2 = NSBox(frame: NSRect(x: x, y: 8, width: 1, height: topToolbarH - 16))
+        let sep2 = NSBox(frame: NSRect(x: x, y: 10, width: 1, height: topToolbarH - 20))
         sep2.boxType = .separator
         bar.addSubview(sep2)
-        x += 12
+        x += 10
 
-        // Undo
-        let undo = NSButton(frame: NSRect(x: x, y: (topToolbarH - 28) / 2, width: 72, height: 28))
+        // Undo button
+        let undo = NSButton(frame: NSRect(x: x, y: (topToolbarH - 26) / 2, width: 70, height: 26))
         undo.title = "Undo"
-        undo.image = NSImage(systemSymbolName: "arrow.uturn.backward", accessibilityDescription: "Undo")
+        if let img = NSImage(systemSymbolName: "arrow.uturn.backward", accessibilityDescription: "Undo") {
+            undo.image = img
+        }
         undo.imagePosition = .imageLeading
         undo.bezelStyle = .rounded
         undo.target = self
